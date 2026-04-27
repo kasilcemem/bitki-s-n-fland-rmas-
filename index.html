@@ -3,18 +3,169 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kaş AI Pro</title>
-<link rel="stylesheet" href="style.css">
+<title>Ücretsiz AI Chat</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Arial, sans-serif;
+background:#0f172a;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+}
+
+.app{
+width:100%;
+max-width:700px;
+height:100vh;
+display:flex;
+flex-direction:column;
+background:#111827;
+}
+
+header{
+padding:18px;
+text-align:center;
+font-size:24px;
+font-weight:bold;
+background:#1f2937;
+}
+
+#chat{
+flex:1;
+overflow-y:auto;
+padding:15px;
+}
+
+.msg{
+padding:12px;
+margin:8px 0;
+border-radius:12px;
+max-width:80%;
+line-height:1.4;
+word-wrap:break-word;
+}
+
+.user{
+background:#2563eb;
+margin-left:auto;
+}
+
+.ai{
+background:#374151;
+}
+
+footer{
+display:flex;
+padding:12px;
+background:#1f2937;
+gap:10px;
+}
+
+input{
+flex:1;
+padding:12px;
+border:none;
+border-radius:10px;
+font-size:16px;
+outline:none;
+}
+
+button{
+padding:12px 18px;
+border:none;
+border-radius:10px;
+background:#22c55e;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:.9;
+}
+</style>
 </head>
 <body>
+
 <div class="app">
-<header>🤖 Kaş AI Pro</header>
-<main id="chat"></main>
+<header>🤖 Ücretsiz AI Chat</header>
+
+<div id="chat"></div>
+
 <footer>
-<input id="input" placeholder="Mesaj yaz..." onkeypress="if(event.key==='Enter')sendMsg()">
+<input id="input" placeholder="Mesaj yaz..." />
 <button onclick="sendMsg()">Gönder</button>
 </footer>
 </div>
-<script src="script.js"></script>
+
+<script>
+const chat = document.getElementById("chat");
+const input = document.getElementById("input");
+
+function addMsg(text,type){
+let div=document.createElement("div");
+div.className="msg "+type;
+div.innerText=text;
+chat.appendChild(div);
+chat.scrollTop=chat.scrollHeight;
+}
+
+function aiAnswer(text){
+
+text=text.toLowerCase();
+
+if(text.includes("merhaba")) return "Merhaba 👋 Sana nasıl yardımcı olabilirim?";
+if(text.includes("nasılsın")) return "Harikayım 😎 Sen nasılsın?";
+if(text.includes("adın ne")) return "Ben ücretsiz yapay zekayım.";
+if(text.includes("teşekkür")) return "Rica ederim 🙏";
+if(text.includes("hava")) return "Canlı hava için internet gerekir ☀️";
+if(text.includes("html")) return "HTML web sayfası oluşturma dilidir.";
+if(text.includes("css")) return "CSS tasarım vermek için kullanılır.";
+if(text.includes("javascript")) return "JavaScript sayfaya hareket kazandırır.";
+
+let replies = [
+"Bunu biraz daha açık yazar mısın?",
+"İlginç bir konu 🤔",
+"Bu konuda yardımcı olabilirim.",
+"Daha detay verirsen daha iyi cevaplarım.",
+"Güzel soru 😎"
+];
+
+return replies[Math.floor(Math.random()*replies.length)];
+}
+
+function sendMsg(){
+
+let text=input.value.trim();
+
+if(text==="") return;
+
+addMsg(text,"user");
+
+input.value="";
+
+setTimeout(()=>{
+addMsg(aiAnswer(text),"ai");
+},400);
+}
+
+input.addEventListener("keypress",function(e){
+if(e.key==="Enter"){
+sendMsg();
+}
+});
+
+addMsg("AI hazır 🚀 Mesaj yaz ve gönder.", "ai");
+</script>
+
 </body>
 </html>
