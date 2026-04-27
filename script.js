@@ -3,17 +3,6 @@ let input = document.getElementById("input");
 
 let generator;
 
-// Model yükleniyor (küçük ücretsiz model)
-async function loadAI() {
-  generator = await window.pipeline(
-    "text-generation",
-    "Xenova/distilgpt2"
-  );
-  addMessage("AI hazır! Yazmaya başlayabilirsin.", "ai");
-}
-
-loadAI();
-
 function addMessage(text, type) {
   let div = document.createElement("div");
   div.className = "message " + type;
@@ -22,6 +11,21 @@ function addMessage(text, type) {
   chat.scrollTop = chat.scrollHeight;
 }
 
+async function loadAI() {
+  addMessage("AI yükleniyor...", "ai");
+
+  const { pipeline } = window.transformers;
+
+  generator = await pipeline(
+    "text-generation",
+    "Xenova/distilgpt2"
+  );
+
+  addMessage("AI hazır!", "ai");
+}
+
+loadAI();
+
 async function sendMessage() {
   let text = input.value;
   if (!text) return;
@@ -29,14 +33,19 @@ async function sendMessage() {
   addMessage(text, "user");
   input.value = "";
 
-  addMessage("Düşünüyor...", "ai");
+  addMessage("...", "ai");
 
-  let result = await generator(text, {
-    max_new_tokens: 60
-  });
+  try {
+    let result = await generator(text, {
+      max_new_tokens: 50
+    });
 
-  // son mesajı sil
-  chat.lastChild.remove();
+    chat.lastChild.remove();
+    addMessage(result[0].generated_text, "ai");
 
-  addMessage(result[0].generated_text, "ai");
+  } catch (e) {
+    chat.lastChild.remove();
+    addMessage("Hata: model çalışmadı", "ai");
+    console.log(e);
+  }
 }

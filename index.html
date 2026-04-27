@@ -4,27 +4,13 @@
   <meta charset="UTF-8">
   <title>Kaş AI Chat</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- Transformers.js (ücretsiz AI engine) -->
-  <script type="module">
-    import { pipeline } from "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2";
-
-    window.pipeline = pipeline;
-  </script>
 </head>
 
 <body>
   <div class="app">
 
     <header>
-      <div class="logo">
-        <!-- Basit logo -->
-        <svg width="40" height="40" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="45" fill="#4f46e5"/>
-          <text x="50" y="60" text-anchor="middle" font-size="40" fill="white">AI</text>
-        </svg>
-        <h1>Kaş AI Chat</h1>
-      </div>
+      <h1>Kaş AI Chat</h1>
     </header>
 
     <main id="chat"></main>
@@ -35,6 +21,9 @@
     </footer>
 
   </div>
+
+  <!-- AI kütüphanesi (DOĞRU YÖNTEM) -->
+  <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers"></script>
 
   <script src="script.js"></script>
 </body>
