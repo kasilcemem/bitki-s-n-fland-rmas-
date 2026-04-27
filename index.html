@@ -2,28 +2,23 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>AI Chat</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kaş AI</title>
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <div class="app">
+<header>🤖 Kaş AI</header>
 
-  <header>
-    <h1>🤖 AI Chat</h1>
-  </header>
+<main id="chat"></main>
 
-  <main id="chat"></main>
-
-  <footer>
-    <input id="input" placeholder="Mesaj yaz..." />
-    <button onclick="send()">Gönder</button>
-  </footer>
-
+<footer>
+<input id="input" placeholder="Mesaj yaz..." onkeypress="if(event.key==='Enter')send()">
+<button onclick="send()">Gönder</button>
+</footer>
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
