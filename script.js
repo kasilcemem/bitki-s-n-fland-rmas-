@@ -1,51 +1,50 @@
 let chat = document.getElementById("chat");
 let input = document.getElementById("input");
 
-let generator;
-
-function addMessage(text, type) {
+function add(text, type) {
   let div = document.createElement("div");
-  div.className = "message " + type;
+  div.className = "msg " + type;
   div.innerText = text;
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
 }
 
-async function loadAI() {
-  addMessage("AI yükleniyor...", "ai");
-
-  const { pipeline } = window.transformers;
-
-  generator = await pipeline(
-    "text-generation",
-    "Xenova/distilgpt2"
-  );
-
-  addMessage("AI hazır!", "ai");
-}
-
-loadAI();
-
-async function sendMessage() {
+async function send() {
   let text = input.value;
   if (!text) return;
 
-  addMessage(text, "user");
+  add(text, "user");
   input.value = "";
 
-  addMessage("...", "ai");
+  add("AI düşünüyor...", "ai");
 
   try {
-    let result = await generator(text, {
-      max_new_tokens: 50
-    });
+    let res = await fetch(
+      "https://api-inference.huggingface.co/models/gpt2",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          inputs: text
+        })
+      }
+    );
+
+    let data = await res.json();
 
     chat.lastChild.remove();
-    addMessage(result[0].generated_text, "ai");
+
+    let reply =
+      data[0]?.generated_text || "Cevap alınamadı";
+
+    add(reply, "ai");
 
   } catch (e) {
     chat.lastChild.remove();
-    addMessage("Hata: model çalışmadı", "ai");
-    console.log(e);
+    add("Hata oluştu", "ai");
   }
 }
+
+add("AI hazır 🚀", "ai");

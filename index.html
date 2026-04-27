@@ -2,104 +2,28 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Mini AI</title>
-
-<style>
-body {
-  margin:0;
-  font-family: Arial;
-  background:#0f172a;
-  color:white;
-}
-
-#chat {
-  height: 90vh;
-  overflow:auto;
-  padding:10px;
-}
-
-.msg {
-  margin:5px;
-  padding:10px;
-  border-radius:8px;
-}
-
-.user { background:#2563eb; text-align:right; }
-.ai { background:#374151; }
-
-#box {
-  display:flex;
-  padding:10px;
-  background:#111827;
-}
-
-input {
-  flex:1;
-  padding:10px;
-}
-
-button {
-  padding:10px;
-}
-</style>
+<title>AI Chat</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div id="chat"></div>
+<div class="app">
 
-<div id="box">
-  <input id="input" placeholder="Yaz..." />
-  <button onclick="send()">Gönder</button>
+  <header>
+    <h1>🤖 AI Chat</h1>
+  </header>
+
+  <main id="chat"></main>
+
+  <footer>
+    <input id="input" placeholder="Mesaj yaz..." />
+    <button onclick="send()">Gönder</button>
+  </footer>
+
 </div>
 
-<script>
-let chat = document.getElementById("chat");
-let input = document.getElementById("input");
-
-// Basit AI beyni
-function brain(text) {
-  text = text.toLowerCase();
-
-  if (text.includes("merhaba")) return "Merhaba! Sana nasıl yardım edebilirim?";
-  if (text.includes("nasılsın")) return "Ben bir yapay zekayım ama gayet çalışıyorum 🙂";
-  if (text.includes("adın ne")) return "Ben Mini AI, tamamen offline çalışırım.";
-  if (text.includes("hava")) return "Hava durumunu internet olmadan bilemem ama dışarı bakabilirsin 🙂";
-  if (text.includes("kim yaptı")) return "Beni senin HTML dosyan oluşturdu.";
-
-  // rastgele cevap
-  const replies = [
-    "Bunu tam anlayamadım ama ilgimi çekti.",
-    "Bunu biraz daha açabilir misin?",
-    "İlginç bir soru 🙂",
-    "Buna farklı açıdan bakabiliriz."
-  ];
-
-  return replies[Math.floor(Math.random() * replies.length)];
-}
-
-function add(text, cls) {
-  let div = document.createElement("div");
-  div.className = "msg " + cls;
-  div.innerText = text;
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
-}
-
-function send() {
-  let text = input.value;
-  if (!text) return;
-
-  add(text, "user");
-  input.value = "";
-
-  setTimeout(() => {
-    add(brain(text), "ai");
-  }, 300);
-}
-
-add("Mini AI hazır. Yazmaya başla 🙂", "ai");
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
